@@ -4,8 +4,8 @@ import StatusSummary from "@/components/dashboard/StatusSummary";
 
 export default function DashboardPage() {
   return (
-    <div className="max-w-6xl">
-      <h1 className="text-xl font-semibold text-gray-900 mb-6">Dashboard</h1>
+    <div>
+      <h1 className="text-xl font-semibold text-[var(--text-primary)] mb-6">Dashboard</h1>
 
       {/* Status Summary */}
       <StatusSummary />

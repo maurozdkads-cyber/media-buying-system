@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className="dark">
       <body>
         <Sidebar />
         <main className="ml-60 min-h-screen p-6 transition-all duration-200">

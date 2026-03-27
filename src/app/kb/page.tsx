@@ -12,9 +12,9 @@ const categoryLabels: Record<KBCategory, string> = {
 };
 
 const confidenceBadge: Record<Confidence, { label: string; color: string }> = {
-  high: { label: "🟢 Alta", color: "text-green-700" },
-  medium: { label: "🟡 Media", color: "text-yellow-700" },
-  low: { label: "🔴 Baja", color: "text-red-700" },
+  high: { label: "🟢 Alta", color: "text-emerald-400" },
+  medium: { label: "🟡 Media", color: "text-yellow-400" },
+  low: { label: "🔴 Baja", color: "text-red-400" },
 };
 
 export default function KBPage() {
@@ -35,10 +35,10 @@ export default function KBPage() {
   });
 
   return (
-    <div className="max-w-6xl">
+    <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold text-gray-900">Knowledge Base</h1>
-        <button className="px-4 py-2 text-sm bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors">
+        <h1 className="text-xl font-semibold text-[var(--text-primary)]">Knowledge Base</h1>
+        <button className="px-4 py-2 text-sm bg-[var(--accent)] text-white rounded-md hover:bg-[var(--accent-hover)] transition-colors">
           + Nuevo Aprendizaje
         </button>
       </div>
@@ -53,7 +53,7 @@ export default function KBPage() {
               category: e.target.value as KBCategory | "",
             }))
           }
-          className="text-sm border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300"
+          className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
         >
           <option value="">Todas las categorías</option>
           {Object.entries(categoryLabels).map(([val, label]) => (
@@ -71,7 +71,7 @@ export default function KBPage() {
               platform: e.target.value as Platform | "",
             }))
           }
-          className="text-sm border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300"
+          className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
         >
           <option value="">Todas las plataformas</option>
           <option value="meta">Meta</option>
@@ -88,7 +88,7 @@ export default function KBPage() {
               vertical: e.target.value as Vertical | "",
             }))
           }
-          className="text-sm border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300"
+          className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
         >
           <option value="">Todas las verticales</option>
           <option value="auto_insurance">Auto Insurance</option>
@@ -105,7 +105,7 @@ export default function KBPage() {
               confidence: e.target.value as Confidence | "",
             }))
           }
-          className="text-sm border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300"
+          className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
         >
           <option value="">Toda confianza</option>
           <option value="high">🟢 Alta</option>
@@ -116,7 +116,7 @@ export default function KBPage() {
 
       {/* Table */}
       {filteredEntries.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-[var(--text-muted)]">
           <p className="text-lg mb-1">Knowledge Base vacía</p>
           <p className="text-sm">
             Los aprendizajes se generan al completar tests o se crean
@@ -124,26 +124,26 @@ export default function KBPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-primary)] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
+              <tr className="border-b border-[var(--border-primary)] bg-[var(--bg-tertiary)]">
+                <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Aprendizaje
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
+                <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Categoría
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
+                <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Plataforma
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
+                <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Vertical
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
+                <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Confianza
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
+                <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Fecha
                 </th>
               </tr>
@@ -152,22 +152,22 @@ export default function KBPage() {
               {filteredEntries.map((entry) => (
                 <tr
                   key={entry.id}
-                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="border-b border-[var(--border-secondary)] hover:bg-[var(--bg-hover)] transition-colors cursor-pointer"
                 >
-                  <td className="px-4 py-3 font-medium text-gray-900 max-w-xs truncate">
+                  <td className="px-4 py-3 font-medium text-[var(--text-primary)] max-w-xs truncate">
                     {entry.title}
                   </td>
-                  <td className="px-4 py-3 text-gray-600">
+                  <td className="px-4 py-3 text-[var(--text-secondary)]">
                     {categoryLabels[entry.category]}
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{entry.platform}</td>
-                  <td className="px-4 py-3 text-gray-600">{entry.vertical}</td>
+                  <td className="px-4 py-3 text-[var(--text-secondary)]">{entry.platform}</td>
+                  <td className="px-4 py-3 text-[var(--text-secondary)]">{entry.vertical}</td>
                   <td className="px-4 py-3">
                     <span className={confidenceBadge[entry.confidence].color}>
                       {confidenceBadge[entry.confidence].label}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-400">
+                  <td className="px-4 py-3 text-[var(--text-muted)]">
                     {entry.createdAt}
                   </td>
                 </tr>

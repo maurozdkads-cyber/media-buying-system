@@ -1,10 +1,10 @@
 "use client";
 
 const stats = [
-  { label: "Tests Activos", value: 0, color: "bg-yellow-50 text-yellow-700 border-yellow-200" },
-  { label: "Backlog", value: 0, color: "bg-gray-50 text-gray-700 border-gray-200" },
-  { label: "Inbox", value: 0, color: "bg-blue-50 text-blue-700 border-blue-200" },
-  { label: "Completados", value: 0, color: "bg-green-50 text-green-700 border-green-200" },
+  { label: "Tests Activos", value: 0, color: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20" },
+  { label: "Backlog", value: 0, color: "bg-[var(--bg-tertiary)] text-[var(--text-secondary)] border-[var(--border-primary)]" },
+  { label: "Inbox", value: 0, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
+  { label: "Completados", value: 0, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
 ];
 
 export default function StatusSummary() {
