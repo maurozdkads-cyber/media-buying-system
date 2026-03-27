@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { KBEntry, KBCategory, Platform, Vertical, Confidence } from "@/types";
 
 const categoryLabels: Record<KBCategory, string> = {
@@ -18,7 +18,8 @@ const confidenceBadge: Record<Confidence, { label: string; color: string }> = {
 };
 
 export default function KBPage() {
-  const [entries] = useState<KBEntry[]>([]);
+  const [entries, setEntries] = useState<KBEntry[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     category: "" as KBCategory | "",
     platform: "" as Platform | "",
@@ -26,13 +27,32 @@ export default function KBPage() {
     confidence: "" as Confidence | "",
   });
 
-  const filteredEntries = entries.filter((e) => {
-    if (filters.category && e.category !== filters.category) return false;
-    if (filters.platform && e.platform !== filters.platform) return false;
-    if (filters.vertical && e.vertical !== filters.vertical) return false;
-    if (filters.confidence && e.confidence !== filters.confidence) return false;
-    return true;
-  });
+  const fetchEntries = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (filters.category) params.set("category", filters.category);
+      if (filters.platform) params.set("platform", filters.platform);
+      if (filters.vertical) params.set("vertical", filters.vertical);
+      if (filters.confidence) params.set("confidence", filters.confidence);
+
+      const queryString = params.toString();
+      const url = `/api/kb${queryString ? `?${queryString}` : ""}`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setEntries(data);
+      }
+    } catch (err) {
+      console.error("Error fetching KB entries:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [filters]);
+
+  useEffect(() => {
+    fetchEntries();
+  }, [fetchEntries]);
 
   return (
     <div>
@@ -55,7 +75,7 @@ export default function KBPage() {
           }
           className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
         >
-          <option value="">Todas las categorías</option>
+          <option value="">Todas las categorias</option>
           {Object.entries(categoryLabels).map(([val, label]) => (
             <option key={val} value={val}>
               {label}
@@ -115,9 +135,13 @@ export default function KBPage() {
       </div>
 
       {/* Table */}
-      {filteredEntries.length === 0 ? (
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <p className="text-[var(--text-muted)]">Cargando...</p>
+        </div>
+      ) : entries.length === 0 ? (
         <div className="text-center py-12 text-[var(--text-muted)]">
-          <p className="text-lg mb-1">Knowledge Base vacía</p>
+          <p className="text-lg mb-1">Knowledge Base vacia</p>
           <p className="text-sm">
             Los aprendizajes se generan al completar tests o se crean
             manualmente.
@@ -132,7 +156,7 @@ export default function KBPage() {
                   Aprendizaje
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
-                  Categoría
+                  Categoria
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Plataforma
@@ -149,7 +173,7 @@ export default function KBPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredEntries.map((entry) => (
+              {entries.map((entry) => (
                 <tr
                   key={entry.id}
                   className="border-b border-[var(--border-secondary)] hover:bg-[var(--bg-hover)] transition-colors cursor-pointer"

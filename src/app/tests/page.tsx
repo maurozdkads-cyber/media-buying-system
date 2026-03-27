@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Test, TestStatus, ViewMode } from "@/types";
 
 const statusConfig: Record<
@@ -17,8 +17,53 @@ const columns: TestStatus[] = ["backlog", "active", "done", "discarded"];
 
 export default function TestsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>("table");
-  const [tests] = useState<Test[]>([]);
+  const [tests, setTests] = useState<Test[]>([]);
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTests();
+  }, []);
+
+  async function fetchTests() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/tests");
+      if (res.ok) {
+        const data = await res.json();
+        setTests(data);
+      }
+    } catch (err) {
+      console.error("Error fetching tests:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleCreateTest() {
+    const title = prompt("Nombre del nuevo test:");
+    if (!title) return;
+    try {
+      const res = await fetch("/api/tests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title }),
+      });
+      if (res.ok) {
+        await fetchTests();
+      }
+    } catch (err) {
+      console.error("Error creating test:", err);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <p className="text-[var(--text-muted)]">Cargando tests...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -48,7 +93,10 @@ export default function TestsPage() {
               Kanban
             </button>
           </div>
-          <button className="px-4 py-2 text-sm bg-[var(--accent)] text-white rounded-md hover:bg-[var(--accent-hover)] transition-colors">
+          <button
+            onClick={handleCreateTest}
+            className="px-4 py-2 text-sm bg-[var(--accent)] text-white rounded-md hover:bg-[var(--accent-hover)] transition-colors"
+          >
             + Nuevo Test
           </button>
         </div>
@@ -56,9 +104,9 @@ export default function TestsPage() {
 
       {tests.length === 0 ? (
         <div className="text-center py-12 text-[var(--text-muted)]">
-          <p className="text-lg mb-1">No hay tests todavía</p>
+          <p className="text-lg mb-1">No hay tests todavia</p>
           <p className="text-sm">
-            Creá un test nuevo o convertí una hipótesis desde Triage.
+            Crea un test nuevo o converti una hipotesis desde Triage.
           </p>
         </div>
       ) : viewMode === "kanban" ? (
@@ -120,7 +168,7 @@ export default function TestsPage() {
                   Plataforma
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
-                  Métrica
+                  Metrica
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase">
                   Fecha
@@ -182,7 +230,7 @@ export default function TestsPage() {
             </div>
             <div>
               <span className="text-xs font-medium text-[var(--text-muted)]">
-                Hipótesis
+                Hipotesis
               </span>
               <p className="text-[var(--text-secondary)]">{selectedTest.hypothesis}</p>
             </div>
@@ -201,7 +249,7 @@ export default function TestsPage() {
               </div>
               <div>
                 <span className="text-xs font-medium text-[var(--text-muted)]">
-                  Métrica de éxito
+                  Metrica de exito
                 </span>
                 <p className="text-[var(--text-secondary)]">{selectedTest.successMetric}</p>
               </div>
