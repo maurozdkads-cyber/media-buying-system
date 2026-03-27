@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "npm run *",
+      "npx *",
+      "docker compose *",
+      "git *",
+      "python *",
+      "node *"
+    ],
+    "deny": [
+      "rm -rf /",
+      "git push --force"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "write",
+        "hooks": [
+          { "type": "command", "command": "echo 'File written — remember to run lint'" }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "MAX_THINKING_TOKENS": "10000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
+  }
+}

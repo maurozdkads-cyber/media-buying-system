@@ -1,0 +1,1 @@
+Create the weekly plan. Review classified backlog and carry-overs from last week. Confirm real capacity. Define: week focus, 1 profit focus, 1 strategic test, 1-2 operational lines, dependencies (creatives, landings, variants), explicit "do not touch this week" list, tentative execution sequence, and closure/advance criteria per front.

@@ -1,0 +1,1 @@
+Evaluate an active running test. Ask the user for current variant data (spend, CTR, CVR, CPA, conversions), days running, and budget. Decide: kill any variant? Enough data? How much longer? Anything suspicious? Apply decision rules for statistical validity.

@@ -1,0 +1,1 @@
+Create today's execution plan. Review what's active, what decisions are needed today, validate against capacity. Define: profit focus, test focus, operational line, dependencies, Block 1 (decisions + protect profit), Block 2 (closure + prep tomorrow), what NOT to touch today, and clear success criteria.

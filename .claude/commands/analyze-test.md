@@ -1,0 +1,1 @@
+Analyze a completed A/B test. Ask the user for test context, metrics for both variants, and baseline. Then follow the test-analysis skill instructions to deliver: conclusion, winner, significance, transferable learning, next action, and new hypothesis. Be concise and data-driven.

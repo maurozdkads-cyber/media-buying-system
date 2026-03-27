@@ -1,0 +1,1 @@
+Monthly knowledge base synthesis. Ask the user for all completed test learnings from the period. Extract: consistent patterns, anti-patterns, second-order hypotheses, and testing gaps. Cross-reference across verticals and platforms. Tag confidence levels.

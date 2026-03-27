@@ -1,0 +1,1 @@
+Prioritize the test backlog. Ask the user for pending hypotheses with impact/effort/urgency, budget constraints, and team objectives. Rank them, identify which to discard, and suggest execution order respecting capacity limits (1 profit focus, 1 strategic test, 1-2 operational lines).
