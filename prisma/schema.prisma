@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---- Enums ----
+
+enum InputStatus {
+  inbox
+  triaged
+  converted
+}
+
+enum InputType {
+  tarea
+  hipotesis
+  dependencia
+  idea
+  urgencia
+}
+
+enum Bucket {
+  protect_profit
+  testing_operativo
+  rd_estrategico
+  pipeline_dependencias
+}
+
+enum Priority {
+  hoy
+  esta_semana
+  backlog
+  estacionado
+}
+
+enum TestStatus {
+  backlog
+  active
+  done
+  discarded
+}
+
+enum TestResult {
+  winner
+  loser
+  inconclusive
+}
+
+enum NextStep {
+  escalar
+  sostener
+  retestear
+  pedir_variante
+  archivar
+}
+
+enum TestCategory {
+  creativos
+  configuraciones
+  landing_pages
+  audiencias
+  copies_ctas
+}
+
+enum Platform {
+  meta
+  tiktok
+  google
+  native
+}
+
+enum Vertical {
+  auto_insurance
+  glp1
+  debt_relief
+  aca
+}
+
+enum Variant {
+  A
+  B
+}
+
+enum Confidence {
+  high
+  medium
+  low
+}
+
+// ---- Models ----
+
+model Input {
+  id        String      @id @default(cuid())
+  text      String
+  source    String      @default("")
+  date      String
+  context   String      @default("")
+  link      String      @default("")
+  status    InputStatus @default(inbox)
+  type      InputType?
+  bucket    Bucket?
+  priority  Priority?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("inputs")
+}
+
+model Test {
+  id                  String        @id @default(cuid())
+  title               String
+  status              TestStatus    @default(backlog)
+  hypothesis          String        @default("")
+  category            TestCategory?
+  platform            Platform?
+  vertical            Vertical?
+  successMetric       String        @default("")
+  secondaryMetric     String        @default("")
+  victoryThreshold    String        @default("")
+  budget              Float         @default(0)
+  duration            Int           @default(0)
+  baseline            String        @default("")
+  controlledVariables String        @default("")
+  result              TestResult?
+  nextStep            NextStep?
+  analysis            String        @default("")
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  startDate           DateTime?
+  closeDate           DateTime?
+
+  trackingEntries TrackingEntry[]
+  kbEntries       KBEntry[]
+
+  @@map("tests")
+}
+
+model TrackingEntry {
+  id              String   @id @default(cuid())
+  testId          String
+  variant         Variant
+  date            String
+  spend           Float    @default(0)
+  primaryMetric   Float    @default(0)
+  secondaryMetric Float    @default(0)
+  notes           String   @default("")
+  createdAt       DateTime @default(now())
+
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+
+  @@map("tracking_entries")
+}
+
+model KBEntry {
+  id         String     @id @default(cuid())
+  testId     String?
+  title      String
+  category   TestCategory
+  platform   Platform?
+  vertical   Vertical?
+  confidence Confidence @default(medium)
+  learning   String     @default("")
+  context    String     @default("")
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  test Test? @relation(fields: [testId], references: [id], onDelete: SetNull)
+
+  @@map("kb_entries")
+}
+
+model DailyNote {
+  id                       String   @id @default(cuid())
+  date                     String   @unique
+  activeItems              String   @default("")
+  decisions                String   @default("")
+  learnings                String   @default("")
+  staysEqual               String   @default("")
+  stops                    String   @default("")
+  scales                   String   @default("")
+  tomorrowProfitFocus      String   @default("")
+  tomorrowTestFocus        String   @default("")
+  tomorrowDependency       String   @default("")
+  tomorrowSuccessCriterion String   @default("")
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@map("daily_notes")
+}
+
+model WeeklyPlan {
+  id                String   @id @default(cuid())
+  weekStart         String   @unique
+  weekFocus         String   @default("")
+  profitFocus       String   @default("")
+  strategicTest     String   @default("")
+  operationalLines  String   @default("")
+  dependencies      String   @default("")
+  doNotTouch        String   @default("")
+  tentativeSequence String   @default("")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("weekly_plans")
+}
